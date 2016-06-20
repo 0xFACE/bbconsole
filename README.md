@@ -11,10 +11,14 @@ Usage:
 Needs bluez sources:
 
 git clone git://git.kernel.org/pub/scm/bluetooth/bluez.git
+
 cd bluez
+
 ./bootstrap
-./confugure
-./make
+
+./configure
+
+make
 
 
 Disclaimer:
