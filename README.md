@@ -24,4 +24,4 @@ make
 Disclaimer:
 
 This is my dirty hack program. I'm not C hacker at all ;-)
-Please fill free to send me PR's to make this program better.
+Please feel free to send me PR's to make this program better.
