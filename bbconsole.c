@@ -258,12 +258,13 @@ int main(int argc, char *argv[]) {
     GError *gerr = NULL;
     printf("Connecting to... %s\n", argv[1]);
     iochannel = gatt_connect(opt_src, argv[1], opt_dst_type, opt_sec_level, opt_psm, opt_mtu, connect_cb, &gerr);
-       if (iochannel == NULL)
-    {
+
+    if (iochannel == NULL) {
         g_error_free(gerr);
-        }
-    else
+    } else {
         g_io_add_watch(iochannel, G_IO_HUP, channel_watcher, NULL);
+    }
+
     g_main_loop_run(event_loop);
 
     fflush(stdout);
