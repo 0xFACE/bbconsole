@@ -29,6 +29,7 @@ make
 
 #### bbconsole
 ```bash
+cd bbconsole
 make
 ```
 
