@@ -25,14 +25,14 @@
 #include "config.h"
 #endif
 
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
-#include <stdio.h>
 #include <assert.h>
+#include <errno.h>
 #include <glib.h>
-
+#include <regex.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 #include "lib/bluetooth.h"
 #include "lib/bluetooth/sdp.h"
