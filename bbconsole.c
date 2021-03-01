@@ -240,6 +240,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    char* mac = argv[1];
+
     GIOChannel *pchan;
     gint events;
 
@@ -256,8 +258,8 @@ int main(int argc, char *argv[]) {
     events = G_IO_IN | G_IO_ERR | G_IO_HUP | G_IO_NVAL;
     g_io_add_watch(pchan, events, prompt_read, NULL);
     GError *gerr = NULL;
-    printf("Connecting to... %s\n", argv[1]);
-    iochannel = gatt_connect(opt_src, argv[1], opt_dst_type, opt_sec_level, opt_psm, opt_mtu, connect_cb, &gerr);
+    printf("Connecting to... %s\n", mac);
+    iochannel = gatt_connect(opt_src, mac, opt_dst_type, opt_sec_level, opt_psm, opt_mtu, connect_cb, &gerr);
 
     if (iochannel == NULL) {
         g_error_free(gerr);
