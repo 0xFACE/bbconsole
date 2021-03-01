@@ -210,8 +210,35 @@ static gboolean prompt_read(GIOChannel *chan, GIOCondition cond,
     return TRUE;
 }
 
-int main(int argc, char *argv[])
-{
+int check_arg_for_mac(char* mac) {
+    regex_t regex;
+    int regex_failure = regcomp(&regex, "([a-f0-9]{2}:){5}[a-f0-9]{2}", REG_EXTENDED|REG_ICASE);
+
+    if(regex_failure) {
+        printf("Regex compile failed with %d!", regex_failure);
+    }
+
+    return regexec(&regex, mac, 0, NULL, 0);
+}
+
+void print_help() {
+    printf("Linux console for BlueBasic.\n\n");
+    printf("Usage:\n");
+    printf("    bbconsole: <bt address>\n\n");
+    printf("Arguments:\n");
+    printf("    <bt address>    The bluetooth MAC address of the device\n");
+    printf("                    (e.g. B4:99:4C:21:5A:97 or b4:99:4c:21:5a:97).\n");
+}
+
+int main(int argc, char *argv[]) {
+    if(
+        argc != 2 ||
+        check_arg_for_mac(argv[1]) == REG_NOMATCH
+    ) {
+        printf("reggex: %d\n", check_arg_for_mac(argv[1]));
+        print_help();
+        return 1;
+    }
 
     GIOChannel *pchan;
     gint events;
