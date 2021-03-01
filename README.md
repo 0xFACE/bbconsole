@@ -33,13 +33,12 @@ make
 ```
 
 
-### Note
-**All sources need to be at the same level:**
+### Note: all sources need to be at the same level
 ```bash
 $ ls -la
-drwxr-xr-x  3 pi   pi     4096 Mar  1 18:38 bbconsole
-drwxr-xr-x 25 pi   pi     4096 Mar  1 18:47 bluez
-drwxr-xr-x 25 pi   pi     4096 Mar  1 18:49 BlueBasic-loader
+drwxr-xr-x  3 pi   pi     4096 Mar  1 18:38 bbconsole/
+drwxr-xr-x 25 pi   pi     4096 Mar  1 18:47 bluez/
+drwxr-xr-x 25 pi   pi     4096 Mar  1 18:49 BlueBasic-loader/
 ...
 ```
 
