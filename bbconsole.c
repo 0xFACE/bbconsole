@@ -256,7 +256,7 @@ int main(int argc, char *argv[]) {
     events = G_IO_IN | G_IO_ERR | G_IO_HUP | G_IO_NVAL;
     g_io_add_watch(pchan, events, prompt_read, NULL);
     GError *gerr = NULL;
-    printf("Connecting to.. %s\n", argv[1]);
+    printf("Connecting to... %s\n", argv[1]);
     iochannel = gatt_connect(opt_src, argv[1], opt_dst_type, opt_sec_level, opt_psm, opt_mtu, connect_cb, &gerr);
        if (iochannel == NULL)
     {
