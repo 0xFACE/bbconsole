@@ -25,14 +25,14 @@
 #include "config.h"
 #endif
 
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
-#include <stdio.h>
 #include <assert.h>
+#include <errno.h>
 #include <glib.h>
-
+#include <regex.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 #include "lib/bluetooth.h"
 #include "lib/bluetooth/sdp.h"
@@ -210,8 +210,37 @@ static gboolean prompt_read(GIOChannel *chan, GIOCondition cond,
     return TRUE;
 }
 
-int main(int argc, char *argv[])
-{
+int check_arg_for_mac(char* mac) {
+    regex_t regex;
+    int regex_failure = regcomp(&regex, "([a-f0-9]{2}:){5}[a-f0-9]{2}", REG_EXTENDED|REG_ICASE);
+
+    if(regex_failure) {
+        printf("Regex compile failed with %d!", regex_failure);
+    }
+
+    return regexec(&regex, mac, 0, NULL, 0);
+}
+
+void print_help() {
+    printf("Linux console for BlueBasic.\n\n");
+    printf("Usage:\n");
+    printf("    bbconsole: <bt address>\n\n");
+    printf("Arguments:\n");
+    printf("    <bt address>    The bluetooth MAC address of the device\n");
+    printf("                    (e.g. B4:99:4C:21:5A:97 or b4:99:4c:21:5a:97).\n");
+}
+
+int main(int argc, char *argv[]) {
+    if(
+        argc != 2 ||
+        check_arg_for_mac(argv[1]) == REG_NOMATCH
+    ) {
+        printf("reggex: %d\n", check_arg_for_mac(argv[1]));
+        print_help();
+        return 1;
+    }
+
+    char* mac = argv[1];
 
     GIOChannel *pchan;
     gint events;
@@ -229,14 +258,15 @@ int main(int argc, char *argv[])
     events = G_IO_IN | G_IO_ERR | G_IO_HUP | G_IO_NVAL;
     g_io_add_watch(pchan, events, prompt_read, NULL);
     GError *gerr = NULL;
-    printf("Connecting to.. %s\n", argv[1]);
-    iochannel = gatt_connect(opt_src, argv[1], opt_dst_type, opt_sec_level, opt_psm, opt_mtu, connect_cb, &gerr);
-       if (iochannel == NULL)
-    {
+    printf("Connecting to... %s\n", mac);
+    iochannel = gatt_connect(opt_src, mac, opt_dst_type, opt_sec_level, opt_psm, opt_mtu, connect_cb, &gerr);
+
+    if (iochannel == NULL) {
         g_error_free(gerr);
-        }
-    else
+    } else {
         g_io_add_watch(iochannel, G_IO_HUP, channel_watcher, NULL);
+    }
+
     g_main_loop_run(event_loop);
 
     fflush(stdout);
